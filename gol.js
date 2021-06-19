@@ -24,8 +24,11 @@ let cols;
 let rows;
 let resolution = 10;
 let iterations = 0;
+let show = 0;
+let fr = 1;
 
 function setup() {
+    frameRate(fr);
     createCanvas(200, 200);
     cols = width / resolution;
     rows = height / resolution;
@@ -37,6 +40,19 @@ function setup() {
         }
     }
     //gridsave(grid, cols, rows)
+}
+
+function faster() {
+    fr = fr * 2;
+    frameRate(fr);
+}
+
+function slower() {
+    fr = fr / 2;
+    if (fr <= 0) {
+        fr = 1;
+    }
+    frameRate(fr);
 }
 
 function refreshGrid() {
@@ -65,8 +81,8 @@ function equalGrids(gridOld, gridNew) {
 function showGrid() {
     console.log("Main Grid");
     gridsave(grid, cols, rows);
-    console.log("Hold grid");
-    gridsave(hold, cols, rows);
+    //console.log("Hold grid");
+    //gridsave(hold, cols, rows);
     console.log("next Grid");
     gridsave(next, cols, rows);
 }
@@ -84,61 +100,56 @@ function gridsave(intialGrid, cols, rows) {
 }
 
 function draw() {
-    background('rgb(0,0,0)');
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            let x = i * resolution;
-            let y = j * resolution;
-            if (grid[i][j] == 1) {
-                //fill('rgb(3, 180, 98)');
-                fill('rgb(0, 255, 0)');
-                stroke(0);
-                rect(x, y, resolution - 1, resolution - 1);
-            }
-        }
-    }
+    if (show != 0) {
 
-    next = make2DArray(cols, rows);
-    hold = make2DArray(cols, rows);
-    // Compute next based on grid
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-            let state = grid[i][j];
-            // Count live neighbors!
-            let sum = 0;
-            let neighbors = countNeighbors(grid, i, j);
 
-            if (state == 0 && neighbors == 3) {
-                next[i][j] = 1;
-            } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-                next[i][j] = 0;
-            } else {
-                next[i][j] = state;
-            }
-        }
-    }
-    if (equalGrids(grid, next)) {
-        console.log("refreshed")
+        background('rgb(0,0,0)');
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
-                var cell = floor(random(2))
-                grid[i][j] = cell;
+                let x = i * resolution;
+                let y = j * resolution;
+                if (grid[i][j] == 1) {
+                    //fill('rgb(3, 180, 98)');
+                    fill('rgb(0, 255, 0)');
+                    stroke(0);
+                    rect(x, y, resolution - 1, resolution - 1);
+                }
             }
         }
-    } else {
-        hold = grid;
-        grid = next;
-    }
-    if (equalGrids(hold, grid)) {
-        console.log("lock averted")
+
+        next = make2DArray(cols, rows);
+        hold = make2DArray(cols, rows);
+        // Compute next based on grid
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
-                var cell = floor(random(2))
-                grid[i][j] = cell;
+                let state = grid[i][j];
+                // Count live neighbors!
+                let sum = 0;
+                let neighbors = countNeighbors(grid, i, j);
+
+                if (state == 0 && neighbors == 3) {
+                    next[i][j] = 1;
+                } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
+                    next[i][j] = 0;
+                } else {
+                    next[i][j] = state;
+                }
             }
         }
+        if (equalGrids(grid, next)) {
+            console.log("refreshed")
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    var cell = floor(random(2))
+                    grid[i][j] = cell;
+                }
+            }
+        } else {
+            grid = next;
+        }
+        iterations += 1;
+
     }
-    iterations += 1;
 }
 
 function countNeighbors(grid, x, y) {
