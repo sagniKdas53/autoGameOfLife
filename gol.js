@@ -1,14 +1,3 @@
-// Acknowldegemnt:
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-
-// Game of Life
-// Video: https://youtu.be/FWSR_7kZuYg
-
-// add this in later : https://github.com/eligrey/FileSaver.js
-
-
 function make2DArray(cols, rows) {
     let arr = new Array(cols);
     for (let i = 0; i < arr.length; i++) {
@@ -42,7 +31,7 @@ function getOffset(el) {
 function onRes() {
     var anchor = document.getElementById("cnv_div");
     var pos = getOffset(anchor);
-    //console.log(pos);
+
     can.position(pos.left, pos.top)
 }
 
@@ -50,12 +39,12 @@ function setup() {
     frameRate(fr);
     can = createCanvas(sizex, sizey);
     can.parent("cnv_div");
-    //var anchor = document.getElementById("cnv_div");
+
     var candiv = document.getElementById("cnv_div");
     candiv.style.maxWidth = sizex;
     candiv.style.maxHeight = sizey;
     var pos = getOffset(candiv);
-    //console.log(pos);
+
     can.position(pos.left, pos.top);
     cols = width / resolution;
     rows = height / resolution;
@@ -73,15 +62,15 @@ function setup() {
             let x = i * resolution;
             let y = j * resolution;
             if (grid[i][j] == 1) {
-                //fill('rgb(3, 180, 98)');
-                //fill('rgb(0, 255, 0)');
+
+
                 fill('rgb(247,64,64)');
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
             }
         }
     }
-    //gridsave(grid, cols, rows)
+
 }
 
 function faster() {
@@ -128,8 +117,8 @@ function showGrid() {
     var result = "";
     result += "Grid after " + iterations + " iterations:\n" + "Main Grid=\n";
     result += gridsave(grid, cols, rows);
-    //console.log("Hold grid");
-    //gridsave(hold, cols, rows);
+
+
     result += "Next Grid=\n";
     result += gridsave(next, cols, rows);
     addText(result);
@@ -139,7 +128,7 @@ function addText(text) {
     document.getElementById("output").value += text;
 }
 
-//the rows are on the x axis on sceeen and the colums are on y
+
 function gridsave(intialGrid, cols, rows) {
     var str_full = '['
     for (let i = 0; i < cols; i++) {
@@ -150,7 +139,7 @@ function gridsave(intialGrid, cols, rows) {
         str = str.slice(0, -1) + "],"
         str_full += "\n" + str;
     }
-    str_full = str_full.slice(0, -1) + "]\n"; //+= "]\n";
+    str_full = str_full.slice(0, -1) + "]\n";
     return str_full;
 }
 
@@ -162,8 +151,8 @@ function draw() {
                 let x = i * resolution;
                 let y = j * resolution;
                 if (grid[i][j] == 1) {
-                    //fill('rgb(3, 180, 98)');
-                    //fill('rgb(0, 255, 0)');
+
+
                     fill('rgb(247,64,64)');
                     stroke(0);
                     rect(x, y, resolution - 1, resolution - 1);
@@ -173,11 +162,11 @@ function draw() {
 
         next = make2DArray(cols, rows);
         hold = make2DArray(cols, rows);
-        // Compute next based on grid
+
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 let state = grid[i][j];
-                // Count live neighbors!
+
                 let sum = 0;
                 let neighbors = countNeighbors(grid, i, j);
 
