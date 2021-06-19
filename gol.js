@@ -24,6 +24,7 @@ let cols;
 let rows;
 let sizex = 200;
 let sizey = 200;
+let can;
 let resolution = 10;
 let iterations = 0;
 let show = 0;
@@ -39,21 +40,22 @@ function getOffset(el) {
 }
 
 function onRes() {
+    var anchor = document.getElementById("cnv_div");
     var pos = getOffset(anchor);
-    console.log(pos);
+    //console.log(pos);
     can.position(pos.left, pos.top)
 }
 
 function setup() {
     frameRate(fr);
-    let can = createCanvas(sizex, sizey);
+    can = createCanvas(sizex, sizey);
     can.parent("cnv_div");
-    var anchor = document.getElementById("cnv_div");
+    //var anchor = document.getElementById("cnv_div");
     var candiv = document.getElementById("cnv_div");
     candiv.style.maxWidth = sizex;
     candiv.style.maxHeight = sizey;
-    var pos = getOffset(anchor);
-    console.log(pos);
+    var pos = getOffset(candiv);
+    //console.log(pos);
     can.position(pos.left, pos.top);
     cols = width / resolution;
     rows = height / resolution;
@@ -65,14 +67,15 @@ function setup() {
         }
     }
 
-    background('rgb(0,0,0)');
+    background('rgb(245,245,245)');
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
             if (grid[i][j] == 1) {
                 //fill('rgb(3, 180, 98)');
-                fill('rgb(0, 255, 0)');
+                //fill('rgb(0, 255, 0)');
+                fill('rgb(247,64,64)');
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
             }
@@ -153,16 +156,15 @@ function gridsave(intialGrid, cols, rows) {
 
 function draw() {
     if (show != 0) {
-
-
-        background('rgb(0,0,0)');
+        background('rgb(245,245,245)');
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 let x = i * resolution;
                 let y = j * resolution;
                 if (grid[i][j] == 1) {
                     //fill('rgb(3, 180, 98)');
-                    fill('rgb(0, 255, 0)');
+                    //fill('rgb(0, 255, 0)');
+                    fill('rgb(247,64,64)');
                     stroke(0);
                     rect(x, y, resolution - 1, resolution - 1);
                 }
