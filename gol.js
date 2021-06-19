@@ -27,9 +27,21 @@ let iterations = 0;
 let show = 0;
 let fr = 1;
 
+function getOffset(el) {
+    const rect = el.getBoundingClientRect();
+    return {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY
+    };
+}
+
 function setup() {
     frameRate(fr);
-    createCanvas(200, 200);
+    let can = createCanvas(200, 200);
+    can.parent("cnv_div");
+    var posx = Math.ceil(document.getElementById("btns").getBoundingClientRect().width) + 20;
+    console.log(posx);
+    can.position(posx, 0);
     cols = width / resolution;
     rows = height / resolution;
     grid = make2DArray(cols, rows);
@@ -39,11 +51,28 @@ function setup() {
             grid[i][j] = cell;
         }
     }
+
+    background('rgb(0,0,0)');
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            let x = i * resolution;
+            let y = j * resolution;
+            if (grid[i][j] == 1) {
+                //fill('rgb(3, 180, 98)');
+                fill('rgb(0, 255, 0)');
+                stroke(0);
+                rect(x, y, resolution - 1, resolution - 1);
+            }
+        }
+    }
     //gridsave(grid, cols, rows)
 }
 
 function faster() {
     fr = fr * 2;
+    if (fr > 32) {
+        fr = 32;
+    }
     frameRate(fr);
 }
 
@@ -63,6 +92,7 @@ function refreshGrid() {
             grid[i][j] = cell;
         }
     }
+    fr = 1;
 }
 
 function equalGrids(gridOld, gridNew) {
@@ -79,6 +109,7 @@ function equalGrids(gridOld, gridNew) {
 }
 
 function showGrid() {
+    console.log("Grid after " + iterations);
     console.log("Main Grid");
     gridsave(grid, cols, rows);
     //console.log("Hold grid");
@@ -89,12 +120,13 @@ function showGrid() {
 
 //the rows are on the x axis on sceeen and the colums are on y
 function gridsave(intialGrid, cols, rows) {
-    console.log("Grid after " + iterations);
     for (let i = 0; i < cols; i++) {
-        var str = ''
+        var str = '['
         for (let j = 0; j < rows; j++) {
-            str = str + intialGrid[i][j];
+            str = str + intialGrid[i][j] + ",";
         }
+        str
+        str = str.slice(0, -1) + "]"
         console.log(str)
     }
 }
