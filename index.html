@@ -19,8 +19,8 @@
         textarea::-webkit-scrollbar-thumb {
             border-radius: 10px;
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
-            background-color: #f74040;
+            box-shadow: inset 0 0 6px rgba(188, 241, 157, 0.1);
+            background-color: rgba(0, 255, 0, 0.74);
         }
     </style>
     <script type="text/javascript" src="gol.js"></script>
@@ -36,23 +36,28 @@
                         Simulation</a>
                 </div>
             </nav>
-            <div class="row">
-                <div class="col-1">
-                    <div class="btn-group-vertical" id="btns">
-                        <button onclick="refreshGrid();" class="btn btn-danger">Reset</button>
+            <div class="row mb-3 mt-3">
+                <div class="col-3 col-sm-3 col-md-1 col-lg-1 col-xl-1 col-xxl-1">
+                    <div class="btn-group-vertical border border-dark rounded" id="btns">
+                        <button onclick="refreshGrid();" class="btn btn-success">Reset</button>
                         <button onclick="showGrid();" class="btn btn-light">Result</button>
-                        <button onclick="show = 0;" class="btn btn-danger">Stop</button>
+                        <button onclick="show = 0;" class="btn btn-success">Stop</button>
                         <button onclick="show = 1;" class="btn btn-light">Start</button>
-                        <button onclick="faster();" class="btn btn-danger">Faster</button>
+                        <button onclick="faster();" class="btn btn-success">Faster</button>
                         <button onclick="slower();" class="btn btn-light">Slower</button>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-9 col-sm-9 col-md-9 col-lg-3 col-xl-3 col-xxl-3">
                     <div id="cnv_div"></div>
                 </div>
-                <div class="col-6">
+                <div class="col-8 col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-4">
                     <div class="form-group">
                         <textarea class="form-control" id="output" rows="9" cols="9" placeholder="Output" readonly></textarea>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-12 col-md-8 col-lg-6 col-xl-6 col-xxl-4">
+                    <div class="form-group">
+                        
                     </div>
                 </div>
             </div>

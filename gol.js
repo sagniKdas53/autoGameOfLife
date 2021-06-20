@@ -31,7 +31,7 @@ function getOffset(el) {
 function onRes() {
     var anchor = document.getElementById("cnv_div");
     var pos = getOffset(anchor);
-
+    //console.log(pos);
     can.position(pos.left, pos.top)
 }
 
@@ -49,6 +49,8 @@ function setup() {
     cols = width / resolution;
     rows = height / resolution;
     grid = make2DArray(cols, rows);
+    hold = make2DArray(cols, rows);
+    next = make2DArray(cols, rows);
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             var cell = floor(random(2))
@@ -56,7 +58,7 @@ function setup() {
         }
     }
 
-    background('rgb(245,245,245)');
+    background('rgb(0, 0, 0)');
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
@@ -64,7 +66,7 @@ function setup() {
             if (grid[i][j] == 1) {
 
 
-                fill('rgb(247,64,64)');
+                fill('rgb(0, 255, 0)');
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
             }
@@ -74,6 +76,9 @@ function setup() {
 }
 
 function faster() {
+    if(fr==32){
+        alert("Can't go any faster");
+    }
     fr = fr * 2;
     if (fr > 32) {
         fr = 32;
@@ -82,8 +87,11 @@ function faster() {
 }
 
 function slower() {
+    if(fr==1){
+        alert("Can't go any slower");
+    }
     fr = fr / 2;
-    if (fr <= 0) {
+    if (fr <= 1) {
         fr = 1;
     }
     frameRate(fr);
@@ -114,12 +122,14 @@ function equalGrids(gridOld, gridNew) {
 }
 
 function showGrid() {
-    var result = "";
-    result += "Grid after " + iterations + " iterations:\n" + "Main Grid=\n";
-    result += gridsave(grid, cols, rows);
+    var result = "Current FPS: "+ fr +"\n";
+    result += "Grid after " + iterations + " iterations:\n"// + "Main Grid=";
+    //result += gridsave(grid, cols, rows);
 
+    result += "Hold Grid=";
+    result += gridsave(hold, cols, rows);
 
-    result += "Next Grid=\n";
+    result += "Next Grid=";
     result += gridsave(next, cols, rows);
     addText(result);
 }
@@ -145,7 +155,7 @@ function gridsave(intialGrid, cols, rows) {
 
 function draw() {
     if (show != 0) {
-        background('rgb(245,245,245)');
+        background('rgb(0, 0, 0)');
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 let x = i * resolution;
@@ -153,16 +163,14 @@ function draw() {
                 if (grid[i][j] == 1) {
 
 
-                    fill('rgb(247,64,64)');
+                    fill('rgb(0, 255, 0)');
                     stroke(0);
                     rect(x, y, resolution - 1, resolution - 1);
                 }
             }
         }
-
+        hold = next;
         next = make2DArray(cols, rows);
-        hold = make2DArray(cols, rows);
-
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 let state = grid[i][j];
@@ -180,16 +188,26 @@ function draw() {
             }
         }
         if (equalGrids(grid, next)) {
-            console.log("refreshed")
+            console.log("same grid refreshed")
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
                     var cell = floor(random(2))
                     grid[i][j] = cell;
                 }
             }
-        } else {
+        } /*else if (equalGrids(next, hold)) {
+            console.log("lock broken")
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    var cell = floor(random(2))
+                    grid[i][j] = cell;
+                }
+            }
+        } */else{
             grid = next;
         }
+
+        
         iterations += 1;
 
     }
