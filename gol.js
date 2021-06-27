@@ -18,6 +18,7 @@ let resolution = 10;
 let iterations = 0;
 let show = 0;
 let fr = 1;
+let edit = 0; //default 0 means no edit
 
 function getOffset(el) {
     var padding = 30;
@@ -53,8 +54,8 @@ function setup() {
     next = make2DArray(cols, rows);
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
-            var cell = floor(random(2))
-            grid[i][j] = cell;
+            //var cell = floor(random(2))
+            grid[i][j] = 0;//cell;
         }
     }
 
@@ -76,7 +77,7 @@ function setup() {
 }
 
 function faster() {
-    if(fr==32){
+    if (fr == 32) {
         alert("Can't go any faster");
     }
     fr = fr * 2;
@@ -87,7 +88,7 @@ function faster() {
 }
 
 function slower() {
-    if(fr==1){
+    if (fr == 1) {
         alert("Can't go any slower");
     }
     fr = fr / 2;
@@ -108,6 +109,7 @@ function refreshGrid() {
     fr = 1;
 }
 
+
 function equalGrids(gridOld, gridNew) {
     var res = true;
     for (let i = 0; i < cols; i++) {
@@ -122,7 +124,7 @@ function equalGrids(gridOld, gridNew) {
 }
 
 function showGrid() {
-    var result = "Current FPS: "+ fr +"\n";
+    var result = "Current FPS: " + fr + "\n";
     result += "Grid after " + iterations + " iterations:\n"// + "Main Grid=";
     //result += gridsave(grid, cols, rows);
 
@@ -203,11 +205,11 @@ function draw() {
                     grid[i][j] = cell;
                 }
             }
-        } */else{
+        } */else {
             grid = next;
         }
 
-        
+
         iterations += 1;
 
     }
@@ -226,6 +228,46 @@ function countNeighbors(grid, x, y) {
     return sum;
 }
 
-window.onresize = function() {
+function editGrid() {
+    if (edit == 0) {  // changes the default to ediatbel
+        edit = 1;
+        show = 0;
+        console.log("Editing grid");
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                //var cell = floor(random(2))
+                grid[i][j] = 0;//cell;
+            }
+        }
+        background('rgb(0, 0, 0)');
+    } else {
+        edit = 0;
+        show = 1;
+        console.log("Loading edited grid");
+    }
+}
+
+function mouseClicked() {
+    if (edit == 1) {  // 1 means editable
+        //console.log(mouseX, mouseY);
+        d = mouseX / resolution;
+        k = mouseY / resolution;
+        if (d < 0) {
+            d = -d;
+        } if (k < 0) {
+            k = -k;
+        }
+        d = Math.floor(d);
+        k = Math.floor(k);
+        //console.log(d, k);
+        grid[d][k] = 1;
+        fill('rgb(0, 255, 0)');
+        stroke(0);
+        rect(mouseX, mouseY, resolution - 1, resolution - 1);
+    }
+}
+
+window.onresize = function () {
     onRes();
 }
+
