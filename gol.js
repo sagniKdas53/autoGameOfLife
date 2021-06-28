@@ -25,7 +25,7 @@ function getOffset(el) {
     const rect = el.getBoundingClientRect();
     return {
         left: rect.left + window.scrollX + padding,
-        top: rect.top + window.scrollY
+        top: rect.top + window.scrollY,
     };
 }
 
@@ -33,7 +33,7 @@ function onRes() {
     var anchor = document.getElementById("cnv_div");
     var pos = getOffset(anchor);
     //console.log(pos);
-    can.position(pos.left, pos.top)
+    can.position(pos.left, pos.top);
 }
 
 function setup() {
@@ -55,25 +55,22 @@ function setup() {
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             //var cell = floor(random(2))
-            grid[i][j] = 0;//cell;
+            grid[i][j] = 0; //cell;
         }
     }
 
-    background('rgb(0, 0, 0)');
+    background("rgb(0, 0, 0)");
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
             if (grid[i][j] == 1) {
-
-
-                fill('rgb(0, 255, 0)');
+                fill("rgb(0, 255, 0)");
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
             }
         }
     }
-
 }
 
 function faster() {
@@ -102,13 +99,12 @@ function refreshGrid() {
     iterations = 0;
     for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
-            var cell = floor(random(2))
+            var cell = floor(random(2));
             grid[i][j] = cell;
         }
     }
     fr = 1;
 }
-
 
 function equalGrids(gridOld, gridNew) {
     var res = true;
@@ -125,7 +121,7 @@ function equalGrids(gridOld, gridNew) {
 
 function showGrid() {
     var result = "Current FPS: " + fr + "\n";
-    result += "Grid after " + iterations + " iterations:\n"// + "Main Grid=";
+    result += "Grid after " + iterations + " iterations:\n"; // + "Main Grid=";
     //result += gridsave(grid, cols, rows);
 
     result += "Hold Grid=";
@@ -140,15 +136,14 @@ function addText(text) {
     document.getElementById("output").value += text;
 }
 
-
 function gridsave(intialGrid, cols, rows) {
-    var str_full = '['
+    var str_full = "[";
     for (let i = 0; i < cols; i++) {
-        var str = '['
+        var str = "[";
         for (let j = 0; j < rows; j++) {
             str = str + intialGrid[i][j] + ",";
         }
-        str = str.slice(0, -1) + "],"
+        str = str.slice(0, -1) + "],";
         str_full += "\n" + str;
     }
     str_full = str_full.slice(0, -1) + "]\n";
@@ -157,15 +152,13 @@ function gridsave(intialGrid, cols, rows) {
 
 function draw() {
     if (show != 0) {
-        background('rgb(0, 0, 0)');
+        background("rgb(0, 0, 0)");
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
                 let x = i * resolution;
                 let y = j * resolution;
                 if (grid[i][j] == 1) {
-
-
-                    fill('rgb(0, 255, 0)');
+                    fill("rgb(0, 255, 0)");
                     stroke(0);
                     rect(x, y, resolution - 1, resolution - 1);
                 }
@@ -190,10 +183,10 @@ function draw() {
             }
         }
         if (equalGrids(grid, next)) {
-            console.log("same grid refreshed")
+            console.log("same grid refreshed");
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
-                    var cell = floor(random(2))
+                    var cell = floor(random(2));
                     grid[i][j] = cell;
                 }
             }
@@ -205,13 +198,11 @@ function draw() {
                     grid[i][j] = cell;
                 }
             }
-        } */else {
+        } */ else {
             grid = next;
         }
 
-
         iterations += 1;
-
     }
 }
 
@@ -228,18 +219,21 @@ function countNeighbors(grid, x, y) {
     return sum;
 }
 
-function editGrid() {
-    if (edit == 0) {  // changes the default to ediatbel
+function editGrid(chk) {
+    if (edit == 0) {
+        // changes the default to ediatbel
         edit = 1;
         show = 0;
         console.log("Editing grid");
-        for (let i = 0; i < cols; i++) {
-            for (let j = 0; j < rows; j++) {
-                //var cell = floor(random(2))
-                grid[i][j] = 0;//cell;
+        if (chk == true) {
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    //var cell = floor(random(2))
+                    grid[i][j] = 0; //cell;
+                }
             }
+            background("rgb(0, 0, 0)");
         }
-        background('rgb(0, 0, 0)');
     } else {
         edit = 0;
         show = 1;
@@ -248,26 +242,41 @@ function editGrid() {
 }
 
 function mouseClicked() {
-    if (edit == 1) {  // 1 means editable
-        //console.log(mouseX, mouseY);
+    if (edit == 1) {
+        edit += 1;
+    } else if (edit == 2) {
+        // 1 means editable and 2 is done to avoid getting the first click
+        console.log(mouseX, mouseY);
         d = mouseX / resolution;
         k = mouseY / resolution;
         if (d < 0) {
             d = -d;
-        } if (k < 0) {
+        }
+        if (k < 0) {
             k = -k;
         }
         d = Math.floor(d);
         k = Math.floor(k);
-        //console.log(d, k);
-        grid[d][k] = 1;
-        fill('rgb(0, 255, 0)');
-        stroke(0);
-        rect(mouseX, mouseY, resolution - 1, resolution - 1);
+        console.log(d, k);
+        try {
+            if (grid[d][k] == 1) {
+                grid[d][k] = 0;
+                fill("rgb(0, 0, 0)");
+                stroke(0);
+                rect(d * 10, k * 10, resolution - 1, resolution - 1);
+            }
+            else {
+                grid[d][k] = 1;
+                fill("rgb(0, 255, 0)");
+                stroke(0);
+                rect(d * 10, k * 10, resolution - 1, resolution - 1);
+            }
+        } catch (TypeError) {
+            alert("Can't add there");
+        }
     }
 }
 
 window.onresize = function () {
     onRes();
-}
-
+};
